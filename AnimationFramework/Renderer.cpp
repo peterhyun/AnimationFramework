@@ -296,7 +296,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 }
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
         int screen_w, screen_h;
         //virtual screen size
         glfwGetWindowSize(window, &screen_w, &screen_h);

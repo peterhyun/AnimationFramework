@@ -88,14 +88,15 @@ Mesh FBXAssimp::processMesh(aiMesh* mesh) {
 
     std::cout << "number of indices: " << indices.size() << std::endl;
 
-    /* didn't know assimp does this for you at loading time lol
+    /*  
+        didn't know assimp does this for you at loading time lol
         //Added 4/17/2020 for normal mapping
         setTangentBasis(vertices, indices);
     */
+
     //mesh has the bone data stored within the mesh.
     loadBones(mesh);
-    //map for storing the (vertexIndex and jointIndexWeightPair) pair
-    std::multimap<int, jointIndexWeightPair> vertexIndex_jointIndexWeightPair_map;
+
     //We now load the skinning data for each bone and set the vertices
     loadBoneSkinningData(mesh, vertices);
 
@@ -404,53 +405,6 @@ const aiNodeAnim* FBXAssimp::findNodeAnim(const aiAnimation* animation, std::str
 unsigned int FBXAssimp::getTotalFrames() {
     return totalDuration + 1;
 }
-
-/*
-void FBXAssimp::setTangentBasis(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
-
-    std::vector<unsigned int> howManyTimesCalled;
-    howManyTimesCalled.resize(vertices.size(), 0);
-
-    for (int i = 0; i < indices.size();i += 3) {
-        glm::vec3& pos0 = vertices[indices[i]].Position;
-        glm::vec3& pos1 = vertices[indices[i + 1]].Position;
-        glm::vec3& pos2 = vertices[indices[i + 2]].Position;
-
-        glm::vec2& uv0 = vertices[indices[i]].TexCoords;
-        glm::vec2& uv1 = vertices[indices[i + 1]].TexCoords;
-        glm::vec2& uv2 = vertices[indices[i + 2]].TexCoords;
-
-        glm::vec3 deltaPos1 = pos1 - pos0;
-        glm::vec3 deltaPos2 = pos2 - pos0;
-
-        glm::vec2 deltaUV1 = uv1 - uv0;
-        glm::vec2 deltaUV2 = uv2 - uv0;
-
-        float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
-
-        glm::vec3 tangent = (deltaPos1 * deltaUV2.y - deltaPos2 * deltaUV1.y) * r;
-        glm::vec3 bitangent = (deltaPos2 * deltaUV1.x - deltaPos1 * deltaUV2.x) * r;
-
-        vertices[indices[i]].Tangent += tangent;
-        vertices[indices[i + 1]].Tangent += tangent;
-        vertices[indices[i + 2]].Tangent += tangent;
-
-        vertices[indices[i]].Bitangent += bitangent;
-        vertices[indices[i + 1]].Bitangent += bitangent;
-        vertices[indices[i + 2]].Bitangent += bitangent;
-
-        //Keep track of how many times this vertex was called
-        howManyTimesCalled[indices[i]] += 1;
-        howManyTimesCalled[indices[i + 1]] += 1;
-        howManyTimesCalled[indices[i + 2]] += 1;
-    }
-
-    for (int i = 0; i<indices.size(); i++) {
-        vertices[indices[i]].Bitangent /= howManyTimesCalled[indices[i]];
-        vertices[indices[i]].Tangent /= howManyTimesCalled[indices[i]];
-    }
-}
-*/
 
 glm::mat4 FBXAssimp::convertAssimpMat4_glmMat4(const aiMatrix4x4& matrix) {
     glm::mat4 m;

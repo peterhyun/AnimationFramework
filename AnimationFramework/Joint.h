@@ -13,14 +13,6 @@
 #include <string>
 #include <glm/glm.hpp>
 
-//The joint index and the weight for a SINGLE vertex.
-struct jointIndexWeightPair {
-    int jointIndex;
-    float weight;
-    jointIndexWeightPair(int jointIndex, float weight) :jointIndex(jointIndex), weight(weight) {
-    }
-};
-
 class Joint
 {
 public:

@@ -1,7 +1,7 @@
 #include "depthMap.h"
 
 //The higher the resolution, the smoother the shadow.
-depthMap::depthMap() :SHADOW_WIDTH(2048), SHADOW_HEIGHT(2048) {
+depthMap::depthMap() :SHADOW_WIDTH(4096), SHADOW_HEIGHT(4096) {
     setupdepthMapBufferObjects();
 }
 
