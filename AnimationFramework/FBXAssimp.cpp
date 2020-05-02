@@ -142,19 +142,6 @@ Mesh FBXAssimp::processMesh(aiMesh* mesh) {
     return Mesh(vertices, indices);
 }
 
-void FBXAssimp::loadBoneSkinningData(const aiMesh* mesh, std::multimap<int, jointIndexWeightPair>& vertexIndex_jointIndexWeightPair_map) {
-    for (int i = 0; i < mesh->mNumBones; i++) {
-        std::string boneName(mesh->mBones[i]->mName.data);
-        int boneIndex = findJointIndex(boneName);
-        for (int j = 0; j < mesh->mBones[i]->mNumWeights; j++) {
-            int vertexID = mesh->mBones[i]->mWeights[j].mVertexId;
-            float weight = mesh->mBones[i]->mWeights[j].mWeight;
-            jointIndexWeightPair jointindexweight(boneIndex, weight);
-            vertexIndex_jointIndexWeightPair_map.insert(std::make_pair(vertexID, jointindexweight));
-        }
-    }
-}
-
 void FBXAssimp::loadBones(const aiMesh* mesh) {
     std::cout << "mNumBones for this mesh is: " << mesh->mNumBones << std::endl;
     for (int i = 0; i < mesh->mNumBones; i++) {
@@ -167,6 +154,19 @@ void FBXAssimp::loadBones(const aiMesh* mesh) {
             joint.boneOffset = convertAssimpMat4_glmMat4(mesh->mBones[i]->mOffsetMatrix);
             joint.name = boneName;
             Joints.push_back(joint);
+        }
+    }
+}
+
+void FBXAssimp::loadBoneSkinningData(const aiMesh* mesh, std::multimap<int, jointIndexWeightPair>& vertexIndex_jointIndexWeightPair_map) {
+    for (int i = 0; i < mesh->mNumBones; i++) {
+        std::string boneName(mesh->mBones[i]->mName.data);
+        int boneIndex = findJointIndex(boneName);
+        for (int j = 0; j < mesh->mBones[i]->mNumWeights; j++) {
+            int vertexIndex = mesh->mBones[i]->mWeights[j].mVertexId;
+            float weight = mesh->mBones[i]->mWeights[j].mWeight;
+            jointIndexWeightPair jointindexweight(boneIndex, weight);
+            vertexIndex_jointIndexWeightPair_map.insert(std::make_pair(vertexIndex, jointindexweight));
         }
     }
 }
