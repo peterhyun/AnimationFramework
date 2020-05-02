@@ -39,8 +39,7 @@ private:
     Mesh processMesh(aiMesh* mesh);
     void processAnimationData();
     void loadBones(const aiMesh* mesh);
-    void loadBoneSkinningData(const aiMesh* mesh, std::multimap<int, jointIndexWeightPair>& vertexIndex_jointIndexWeightPair_map);
-    void setVertexJoints_Weights(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::multimap<int, jointIndexWeightPair>& vertexIndex_jointIndexWeightPair_map);
+    void loadBoneSkinningData(const aiMesh* mesh, std::vector<Vertex>& vertices);
     void readNodeAnimationDFS(int i, const aiNode* node, glm::mat4 parentTransform);
 
     //The following functions are more like utility functions
@@ -50,7 +49,6 @@ private:
     glm::mat4 getLocalRotation(int frameTime, const aiNodeAnim* nodeAnim);
     glm::mat4 getLocalTranslation(int frameTime, const aiNodeAnim* nodeAnim);
     int findJointIndex(std::string nodeName);
-    //void setTangentBasis(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices);
 
 public:
     FBXAssimp(const char* filePath);

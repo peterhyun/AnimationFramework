@@ -15,10 +15,8 @@ float ShadowCalculation(vec4 fragPosLightSpace){
     projCoords = projCoords * 0.5 + 0.5;
     float closestDepth = texture(shadowMap, projCoords.xy).r;
     float currentDepth = projCoords.z;
-    //float bias = 0.0004;
-    //float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
     
-    float bias = 0.005;
+    float bias = 0.0005;
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
     for(int x = -1; x <= 1; ++x)
@@ -31,8 +29,8 @@ float ShadowCalculation(vec4 fragPosLightSpace){
     }
     shadow /= 9.0; 
 
-    // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
-    if(projCoords.z > 1.0)
+    // keep the shadow when region is out of light's frustum.
+    if(projCoords.z > 1.0 || projCoords.x > 1.0 || projCoords.y > 1.0)
         shadow = 0.0;
 
     return shadow;

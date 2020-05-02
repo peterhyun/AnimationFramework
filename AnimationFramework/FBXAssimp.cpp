@@ -40,6 +40,7 @@ void FBXAssimp::processNode(aiNode* node) {
     std::cout << "node has " << node->mNumMeshes << " mesh(es)" << std::endl;
     std::cout << "node has " << node->mNumChildren << " children" << std::endl;
      */
+    std::cout << "num of mesh in this node " << node->mNumMeshes << std::endl;
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         meshes.push_back(processMesh(mesh));
@@ -95,10 +96,8 @@ Mesh FBXAssimp::processMesh(aiMesh* mesh) {
     loadBones(mesh);
     //map for storing the (vertexIndex and jointIndexWeightPair) pair
     std::multimap<int, jointIndexWeightPair> vertexIndex_jointIndexWeightPair_map;
-    //We now load the skinning data for each bone and store it in vertexIndex_jointIndexWeightPair_map
-    loadBoneSkinningData(mesh, vertexIndex_jointIndexWeightPair_map);
-    //Change the Vertex data here. We update the skinning data within the Vertex instances. Check the Vertex struct.
-    setVertexJoints_Weights(vertices, indices, vertexIndex_jointIndexWeightPair_map);
+    //We now load the skinning data for each bone and set the vertices
+    loadBoneSkinningData(mesh, vertices);
 
     //We get the texture data here.
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -158,58 +157,56 @@ void FBXAssimp::loadBones(const aiMesh* mesh) {
     }
 }
 
-void FBXAssimp::loadBoneSkinningData(const aiMesh* mesh, std::multimap<int, jointIndexWeightPair>& vertexIndex_jointIndexWeightPair_map) {
+void FBXAssimp::loadBoneSkinningData(const aiMesh* mesh, std::vector<Vertex>& vertices) {
     for (int i = 0; i < mesh->mNumBones; i++) {
         std::string boneName(mesh->mBones[i]->mName.data);
         int boneIndex = findJointIndex(boneName);
+        //std::cout << "mesh->mBones[" << i << "]->mNumWeights " << mesh->mBones[i]->mNumWeights << std::endl;
         for (int j = 0; j < mesh->mBones[i]->mNumWeights; j++) {
             int vertexIndex = mesh->mBones[i]->mWeights[j].mVertexId;
             float weight = mesh->mBones[i]->mWeights[j].mWeight;
-            jointIndexWeightPair jointindexweight(boneIndex, weight);
-            vertexIndex_jointIndexWeightPair_map.insert(std::make_pair(vertexIndex, jointindexweight));
-        }
-    }
-}
-
-void FBXAssimp::setVertexJoints_Weights(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::multimap<int, jointIndexWeightPair>& vertexIndex_jointIndexWeightPair_map) {
-    std::vector<int> processedIndices;
-    for (int i = 0; i < indices.size(); i++) {
-        bool duplicate = false;
-        int vertexIndex = indices[i];
-        for (int j = 0; j < processedIndices.size(); j++) {
-            if (vertexIndex == processedIndices[j]) {
-                duplicate = true;
-                break;
+            //std::cout << "vertexIndex is " << vertexIndex << " and weight is " << weight << " and boneIndex is " << boneIndex << std::endl;
+            if (vertices[vertexIndex].weightIndices.x == 0.0f) {
+                //std::cout << "vertexIndex " << vertexIndex << " weight is " << weight << std::endl;
+                vertices[vertexIndex].boneIndices.x = boneIndex;
+                vertices[vertexIndex].weightIndices.x = weight;
+            }
+            else if (vertices[vertexIndex].weightIndices.y == 0.0f) {
+                //std::cout << "vertexIndex " << vertexIndex << " weight is " << weight << std::endl;
+                vertices[vertexIndex].boneIndices.y = boneIndex;
+                vertices[vertexIndex].weightIndices.y = weight;
+            }
+            else if (vertices[vertexIndex].weightIndices.z == 0.0f) {
+                //std::cout << "vertexIndex " << vertexIndex << " weight is " << weight << std::endl;
+                vertices[vertexIndex].boneIndices.z = boneIndex;
+                vertices[vertexIndex].weightIndices.z = weight;
+            }
+            else if (vertices[vertexIndex].weightIndices.w == 0.0f) {
+                //std::cout << "vertexIndex " << vertexIndex << " weight is " << weight << std::endl;
+                vertices[vertexIndex].boneIndices.w = boneIndex;
+                vertices[vertexIndex].weightIndices.w = weight;
+            }
+            else if (vertices[vertexIndex].weightIndices2.x == 0.0f) {
+                //std::cout << "vertexIndex " << vertexIndex << " weight is " << weight << std::endl;
+                vertices[vertexIndex].boneIndices2.x = boneIndex;
+                vertices[vertexIndex].weightIndices2.x = weight;
+            }
+            else if (vertices[vertexIndex].weightIndices2.y == 0.0f) {
+                //std::cout << "vertexIndex " << vertexIndex << " weight is " << weight << std::endl;
+                vertices[vertexIndex].boneIndices2.y = boneIndex;
+                vertices[vertexIndex].weightIndices2.y = weight;
+            }
+            else if (vertices[vertexIndex].weightIndices2.z == 0.0f) {
+                //std::cout << "vertexIndex " << vertexIndex << " weight is " << weight << std::endl;
+                vertices[vertexIndex].boneIndices2.z = boneIndex;
+                vertices[vertexIndex].weightIndices2.z = weight;
+            }
+            else if (vertices[vertexIndex].weightIndices2.w == 0.0f){
+                //std::cout << "vertexIndex " << vertexIndex << " weight is " << weight << std::endl;
+                vertices[vertexIndex].boneIndices2.w = boneIndex;
+                vertices[vertexIndex].weightIndices2.w = weight;
             }
         }
-        if (duplicate) {
-            continue;
-        }
-        else {
-            processedIndices.push_back(vertexIndex);
-        }
-        float indices[4] = {};
-        float weights[4] = {};
-        float indices2[4] = {};
-        float weights2[4] = {};
-        std::pair<std::multimap<int, jointIndexWeightPair>::iterator, std::multimap<int, jointIndexWeightPair>::iterator> result = vertexIndex_jointIndexWeightPair_map.equal_range(vertexIndex);
-        int count = 0;
-        for (std::multimap<int, jointIndexWeightPair>::iterator it = result.first; it != result.second; it++) {
-            jointIndexWeightPair temp = it->second;
-            if (count < 4) {
-                indices[count] = temp.jointIndex;
-                weights[count] = temp.weight;
-            }
-            else {
-                indices2[count - 4] = temp.jointIndex;
-                weights2[count - 4] = temp.weight;
-            }
-            count++;
-        }
-        vertices[vertexIndex].boneIndices = glm::vec4(indices[0], indices[1], indices[2], indices[3]);
-        vertices[vertexIndex].boneIndices2 = glm::vec4(indices2[0], indices2[1], indices2[2], indices2[3]);
-        vertices[vertexIndex].weightIndices = glm::vec4(weights[0], weights[1], weights[2], weights[3]);
-        vertices[vertexIndex].weightIndices2 = glm::vec4(weights2[0], weights2[1], weights2[2], weights2[3]);
     }
 }
 

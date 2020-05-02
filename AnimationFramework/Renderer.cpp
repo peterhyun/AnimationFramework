@@ -8,8 +8,8 @@
 
 #include "Renderer.h"
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1600;
+const unsigned int SCR_HEIGHT = 1200;
 
 // camera
 Camera camera;
@@ -375,7 +375,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 }
 
-/*
+
+/* //This function is for debugging!
 void Renderer::renderQuad()
 {
     if (quadVAO == 0)
