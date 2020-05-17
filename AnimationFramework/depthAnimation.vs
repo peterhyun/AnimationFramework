@@ -3,8 +3,8 @@ layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 uv_Coord;
 layout (location = 3) in vec3 aTangent;
-layout (location = 4) in vec4 jointIndex;
-layout (location = 5) in vec4 jointIndex2;
+layout (location = 4) in uvec4 jointIndex;
+layout (location = 5) in uvec4 jointIndex2;
 layout (location = 6) in vec4 weights;
 layout (location = 7) in vec4 weights2;
 
@@ -17,14 +17,14 @@ uniform float signal;
 
 void main()
 {
-int jointIndex_x = int(jointIndex.x);
-int jointIndex_y = int(jointIndex.y);
-int jointIndex_z = int(jointIndex.z);
-int jointIndex_w = int(jointIndex.w);
-int jointIndex2_x = int(jointIndex2.x);
-int jointIndex2_y = int(jointIndex2.y);
-int jointIndex2_z = int(jointIndex2.z);
-int jointIndex2_w = int(jointIndex2.w);
+uint jointIndex_x = jointIndex.x;
+uint jointIndex_y = jointIndex.y;
+uint jointIndex_z = jointIndex.z;
+uint jointIndex_w = jointIndex.w;
+uint jointIndex2_x = jointIndex2.x;
+uint jointIndex2_y = jointIndex2.y;
+uint jointIndex2_z = jointIndex2.z;
+uint jointIndex2_w = jointIndex2.w;
 
 mat4 skinningModel;
 

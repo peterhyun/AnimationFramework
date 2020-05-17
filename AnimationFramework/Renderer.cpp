@@ -61,6 +61,7 @@ Renderer::Renderer(const char* fileName) {
     fbxAssimp = new FBXAssimp(fileName);
     std::cout << "fbx loading finished." << std::endl;
     ourFloor = new Floor;
+    ourAxis = new Axis;
     DepthMap = new depthMap;
     frameNum = fbxAssimp->getTotalFrames();
     std::cout << "frameNum: " << frameNum << std::endl;
@@ -116,6 +117,7 @@ void Renderer::configureOpenGLSettings() {
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    glLineWidth(4.0f);
 }
 void Renderer::compileShader() {
     //Shaders for ordinary rendering
@@ -124,6 +126,9 @@ void Renderer::compileShader() {
     floorShader = new Shader("floor.vs", "floor.fs");
     floorShader->use();
     floorShader->setInt("shadowMap", 0);
+
+    axisShader = new Shader("axis.vs", "axis.fs");
+    axisShader->use();
 
     //Shaders for depthmap. (light's perspective)
     depthMapShader = new Shader("depthMap.vs", "depthMap.fs");
@@ -208,6 +213,10 @@ void Renderer::renderLoop() {
 
             //std::cout << "floorShader all set" << std::endl;
 
+            axisShader->use();
+            axisShader->setMat4("projection", projection);
+            axisShader->setMat4("view", view);
+
             deltaTime2--;
         }
 
@@ -228,6 +237,9 @@ void Renderer::renderLoop() {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, DepthMap->depthMapTexture);
         ourFloor->draw(floorShader);
+        //Also draw axis
+        axisShader->use();
+        ourAxis->draw(axisShader);
 
         //3. Draw objects as normal. Update the stencil buffer as 'objectCount'
         glStencilFunc(GL_ALWAYS, objectCount, 0xFF);

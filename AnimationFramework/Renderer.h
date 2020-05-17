@@ -16,6 +16,7 @@
 #include "Shader.h"
 #include "FBXAssimp.h"
 #include "Floor.h"
+#include "Axis.h"
 #include "depthMap.h"
 
 class Renderer {
@@ -31,7 +32,9 @@ private:
     Shader* depthMapAnimationShader;
     Shader* debugShader;
     Shader* stencilTestShader;
+    Shader* axisShader;
     Floor* ourFloor;
+    Axis* ourAxis;
     depthMap* DepthMap;
     int initialize();
 

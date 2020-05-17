@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Axis.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="depthMap.cpp" />
     <ClCompile Include="FBXAssimp.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Axis.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="depthMap.h" />
     <ClInclude Include="FBXAssimp.h" />

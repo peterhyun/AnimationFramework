@@ -30,8 +30,8 @@ struct Vertex {
     glm::vec3 Normal;
     glm::vec2 TexCoords;
     glm::vec3 Tangent = glm::vec3(0.0f);
-    glm::vec4 boneIndices = glm::vec4(0.0f);
-    glm::vec4 boneIndices2 = glm::vec4(0.0f);
+    glm::uvec4 boneIndices = glm::uvec4(0);
+    glm::uvec4 boneIndices2 = glm::uvec4(0);
     glm::vec4 weightIndices = glm::vec4(0.0f);
     glm::vec4 weightIndices2 = glm::vec4(0.0f);
 };
