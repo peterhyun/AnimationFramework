@@ -19,16 +19,22 @@ float ShadowCalculation(vec4 fragPosLightSpace){
     float bias = 0.0005;
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
-    for(int x = -2; x <= 2; ++x)
+
+    for(int x = -3; x <= 3; ++x)
     {
-        for(int y = -2; y <= 2; ++y)
+        for(int y = -3; y <= 3; ++y)
         {
             float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
             shadow += ((currentDepth - bias) > pcfDepth  ? 1.0 : 0.0);        
         }    
     }
     shadow /= 25.0; 
-
+    
+    /*
+    float pcfDepth = texture(shadowMap, projCoords.xy).r; 
+    shadow = ((currentDepth - bias) > pcfDepth ? 1.0 : 0.0);
+    */
+    
     // keep the shadow when region is out of light's frustum.
     if(projCoords.z > 1.0 || projCoords.x > 1.0 || projCoords.y > 1.0)
         shadow = 0.0;
@@ -48,5 +54,5 @@ void main()
     float fogLevel = 1.0/exp(0.0015*distance);
     float tilePattern = 0.9 - length(uv) * 0.5; 
     
-    FragColor = (1.0-ShadowCalculation(fragPosLightSpace)) * vec4(mix(vec3(0.7, 0.7, 0.7), vec3(tilePattern, tilePattern, tilePattern), fogLevel), 1.0);
+    FragColor = (1.0-ShadowCalculation(fragPosLightSpace))  * vec4(mix(vec3(0.7, 0.7, 0.7), vec3(tilePattern, tilePattern, tilePattern), fogLevel), 1.0);
 }

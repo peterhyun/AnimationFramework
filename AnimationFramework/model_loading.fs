@@ -9,6 +9,7 @@ in vec2 texCoord;
 in vec3 tangentLightPos;
 in vec3 tangentViewPos;
 in vec3 tangentFragPos;
+in vec3 worldNormal;
 
 void main()
 {
@@ -16,9 +17,12 @@ void main()
 vec3 normal = texture(normalTexture, texCoord).rgb;
 normal = normalize(normal * 2.0 - 1.0);
 
+//No normal mapping
+//vec3 normal = normalize(worldNormal);
+
 vec3 diffuseColor = texture(diffuseTexture, texCoord).rgb;
 
-vec3 ambient = 0.1 * diffuseColor;
+vec3 ambient = 0.3 * diffuseColor;
 
 vec3 lightDir = normalize(tangentLightPos - tangentFragPos);
 float diff = max(dot(normal, lightDir), 0.0);
