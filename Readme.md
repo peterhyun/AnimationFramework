@@ -1,3 +1,45 @@
+# AnimationFramework  
+FBX based animation framework developed in Visual Studio 2019. Useful for Computer Animation researchers.  
+Used OpenGL 3.3, GLFW 3.3.6, Assimp 5.0.1, and GLAD.  
+  
+* Features
+OOP  
+Fast loading  
+Normal mapping  
+Smoothe shadows  
+Object Selection  
+Smoothe Animation  
+
+* How to build and run.
+1. Download this repository and go to ```AnimationFramework/Build``` directory.
+
+```bash
+git clone --recursive https://github.com/peterhyun/AnimationFramework
+cd AnimationFramework
+cd Build
+```
+
+2. Build depending on your OS and IDE. I used Microsoft Windows, Visual Studio 2019.
+
+```bash
+# UNIX Makefile
+cmake ..
+
+# Mac OSX
+cmake -G "Xcode" ..
+
+# Microsoft Windows
+cmake -G "Visual Studio 16 2019" ..
+...
+```
+
+3. Run the program with with the fbx file name you want to load as the command line input.  
+```./Glitter $(fbx file name)```
+  
+Demo)  
+https://www.youtube.com/watch?v=bEgeBJthBbI
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # [Glitter](http://polytonic.github.io/Glitter/)
 ![Screenshot](http://i.imgur.com/MDo2rsy.jpg)
 
