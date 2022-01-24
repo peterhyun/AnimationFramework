@@ -1,6 +1,7 @@
 # AnimationFramework  
 FBX based animation framework developed in Visual Studio 2019. Useful for Computer Animation researchers.  
 Used OpenGL 3.3, GLFW 3.3.6, Assimp 5.0.1, and GLAD.  
+The only dependency of this repository is CMake.
   
 * Features
 OOP  
@@ -19,7 +20,7 @@ cd AnimationFramework
 cd Build
 ```
 
-2. Build depending on your OS and IDE. I used Microsoft Windows, Visual Studio 2019.
+2. Make a project/solution file or makefile depending on your platform. I used Microsoft Windows, Visual Studio 2019.
 
 ```bash
 # UNIX Makefile
@@ -33,7 +34,9 @@ cmake -G "Visual Studio 16 2019" ..
 ...
 ```
 
-3. Run the program with with the fbx file name you want to load as the command line input.  
+3. Build the project on your platform accordingly.
+
+4. Run the produced executable file with with the fbx file name you want to load as the command line input.  
 ```./Glitter $(fbx file name)```
   
 Demo)  
