@@ -98,22 +98,24 @@ All the rendering related functions are implemented and managed in the ```Render
 
 The most important class is the ```FBXAssimp``` class. This program used the assimp library for reading the fbx file, and I had to convert assimp's data to renderable vertices.
 To implement linear blend skinning and normal mapping, I designed each vertex data to have the following structure.
+
 ![Screenshot](screenshots/VertexStructure.PNG)
+
 This is implemented as ```struct Vertex``` in ```Mesh.h```. The ```Mesh``` class manages the ```struct Vertex``` of each mesh defined in the fbx file.
 Then, as Assimp loads the model data as the following tree structure, I processed this tree from the root node (```aiScene```) in a Depth-First Search(DFS) manner.
+
 ![Screenshot](screenshots/AssimpModelLoading.PNG)
 
 This is implemented in the ```FBXAssimp::processNode``` function. With this method, all the mesh data of the fbx file are converted to renderable vertex data.
 
 Similarly, Animation data is also read in a DFS manner as Assimp loads animation data also as a tree structure.
+
 ![Screenshot](screenshots/AssimpAnimationLoading.PNG)
 
-I also implemented shadow mapping and basic anti-aliasing. These techniques can be found implemented in the ```depthMap``` class and the shader files ```depthMap.vs```, ```depthMap.fs```. Basically, these techniques utilizes an additional framebuffer that renders the point of view from the light, and calculates whether the pixel on screen should be shaded as a shadow or not.
+I also implemented shadow mapping and basic anti-aliasing which uses 7x7 sized Gaussian Filters. These techniques can be found implemented in the ```depthMap``` class and the shader files ```depthMap.vs```, ```depthMap.fs```. Basically, these techniques takes advantage of an additional framebuffer that renders the view from the point of view of the light, and calculates whether the pixel on screen should be shaded as a shadow or not.
 
 Finally, for rendering object selection (by clicking the right-mouse-button), I utilized the stencil buffer.
-The stencil buffer has the same size as a frame buffer, and when a certain part of the frame buffer is being drawn it can store a predesignated value at the same location within the stencil buffer.
-So when an object is clicked and the clicked pixel's stencil value matches a certain value, I use shaders to outline the clicked object in an orange color.
-The implementation can be found in the shader files ```stencilShader.vs```, ```singleColor.fs```, and in ```Renderer::renderLoop()```.
+The stencil buffer has the same size as a frame buffer, and when a certain part of the frame buffer is being drawn it can simultaneously store a predesignated value at the same location within the stencil buffer. So when an object is clicked and the clicked pixel's stencil value matches a certain value, I use shaders to outline the clicked object in an orange color. The implementation can be found in the shader files ```stencilShader.vs```, ```singleColor.fs```, and in ```Renderer::renderLoop()```.
 
 ## Acknowledgement
 The basic OpenGL Setup boilerplate of this code is from Kevin Fung's Glitter repository: https://github.com/Polytonic/Glitter
