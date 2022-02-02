@@ -112,7 +112,7 @@ Similarly, Animation data is also read in a DFS manner as Assimp loads animation
 
 ![Screenshot](screenshots/AssimpAnimationLoading.PNG)
 
-I also implemented shadow mapping and basic anti-aliasing which uses 7x7 sized Gaussian Filters. These techniques can be found implemented in the ```depthMap``` class and the shader files ```depthMap.vs```, ```depthMap.fs```. Basically, these techniques takes advantage of an additional framebuffer that renders the view from the point of view of the light, and calculates whether the pixel on screen should be shaded as a shadow or not.
+I also implemented shadow mapping and basic anti-aliasing which uses 7x7 sized percentage-closer filters(PCFs). These techniques can be found implemented in the ```depthMap``` class and the shader files ```depthMap.vs```, ```depthMap.fs```. Basically, these techniques takes advantage of an additional framebuffer that renders the view from the point of view of the light, and calculates whether the pixel on screen should be shaded as a shadow or not.
 
 Finally, for rendering object selection (by clicking the right-mouse-button), I utilized the stencil buffer.
 The stencil buffer has the same size as a frame buffer, and when a certain part of the frame buffer is being drawn it can simultaneously store a predesignated value at the same location within the stencil buffer. So when an object is clicked and the clicked pixel's stencil value matches a certain value, I use shaders to outline the clicked object in an orange color. The implementation can be found in the shader files ```stencilShader.vs```, ```singleColor.fs```, and in ```Renderer::renderLoop()```.
