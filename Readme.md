@@ -42,6 +42,52 @@ cmake -G "Visual Studio 16 2019" ..
 Demo)  
 https://www.youtube.com/watch?v=bEgeBJthBbI
 
+.
+├── Build/
+├── Glitter/
+│   ├── Assets/
+│   │   ├── README
+│   │   ├── Defeated.fbx
+│   │   ├── Jumping.fbx
+│   │   ├── SambaDancing.fbx
+│   │   └── Yelling.fbx
+│   ├── Headers/
+│   │   ├── Axis.h
+│   │   ├── Camera.h
+│   │   ├── FBXAssimp.h
+│   │   ├── Floor.h
+│   │   ├── Joint.h
+│   │   ├── Mesh.h
+│   │   ├── Renderer.h
+│   │   ├── Shader.h
+│   │   └── depthMap.h
+│   ├── Shaders/
+│   │   ├── axis.fs
+│   │   ├── axis.vs
+│   │   ├── depthAnimation.fs
+│   │   ├── depthAnimation.vs
+│   │   ├── depthMap.fs
+│   │   ├── depthMap.vs
+│   │   ├── floor.fs
+│   │   ├── floor.vs
+│   │   ├── model_loading.fs
+│   │   ├── model_loading.vs
+│   │   ├── singleColor.fs
+│   │   └── stencilShader.vs
+│   ├── Sources/
+│   │   ├── Axis.cpp
+│   │   ├── Camera.cpp
+│   │   ├── FBXAssimp.cpp
+│   │   ├── Floor.cpp
+│   │   ├── Mesh.cpp
+│   │   ├── Renderer.cpp
+│   │   ├── depthMap.cpp
+│   │   └── main.cpp
+│   └── Vendor/
+├── screenshots/
+├── CMakeLists.txt
+└── Readme.md
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # [Glitter](http://polytonic.github.io/Glitter/)
 ![Screenshot](http://i.imgur.com/MDo2rsy.jpg)
