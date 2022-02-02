@@ -15,7 +15,7 @@ Smoothe Animation
 1. Download this repository and go to ```AnimationFramework/Build``` directory.
 
 ```bash
-git clone --recursive https://github.com/peterhyun/AnimationFramework
+git clone --recursive https://github.com/peterhyun/AnimationFramework.git
 cd AnimationFramework
 cd Build
 ```
